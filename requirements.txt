@@ -1,6 +1,7 @@
 jupyter
 pymongo
 pandas
+python-dotenv==0.21.0
 evidently
 category-encoders
 from-root
