@@ -5,7 +5,7 @@ import numpy as np
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 
-from tourism.configuration.mongo_db_operations import MongoDBOperation
+from tourism.configuration.mongo_operations import MongoDBOperation
 from tourism.constant import TRAIN_TEST_SPLIT_SIZE, RANDOM_STATE
 from tourism.entity.config_entity import DatabaseConfig
 from tourism.exception import TourismException

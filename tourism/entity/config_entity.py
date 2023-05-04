@@ -2,22 +2,13 @@ import os
 
 from pymongo import MongoClient
 
-from dotenv import load_dotenv
-print(f"Reading Environment Variables")
-load_dotenv()
-
-import urllib
-
-user = urllib.parse.quote_plus(os.getenv("USER"))
-passwd = urllib.parse.quote_plus(os.getenv("PASS"))
-
 class DatabaseConfig:
     def __init__(self):
         self.DATABASE_NAME = "iNeuron"
         
         self.COLLECTION_NAME = "tourism"
         
-        self.MONGO_DB_URL = "mongodb+srv://%s:%s@cluster0.ppzqzhg.mongodb.net/?retryWrites=true&w=majority" % (user, passwd)
+        self.MONGO_DB_URL = f'mongodb+srv://harshal:Harshal@123@cluster0.ppzqzhg.mongodb.net/?retryWrites=true&w=majority'
         
     def get_database_config(self):
         return self.__dict__
