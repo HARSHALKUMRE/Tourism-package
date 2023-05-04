@@ -8,7 +8,7 @@ class DatabaseConfig:
         
         self.COLLECTION_NAME = "tourism"
         
-        self.MONGO_DB_URL = f'mongodb+srv://harshal:Harshal@123@cluster0.ppzqzhg.mongodb.net/?retryWrites=true&w=majority'
+        self.MONGO_DB_URL = os.environ["MONGO_DB_URL"]
         
     def get_database_config(self):
         return self.__dict__
