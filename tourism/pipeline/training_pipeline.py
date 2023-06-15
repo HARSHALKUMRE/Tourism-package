@@ -4,6 +4,10 @@ from typing import List, Tuple
 from pandas import DataFrame
 
 from tourism.components.data_ingestion import DataIngestion
+from tourism.components.data_validation import DataValidation
+from tourism.components.data_transformation import DataTransformation
+from tourism.components.model_trainer import ModelTrainer
+from tourism.components.model_pusher import ModelPusher
 from tourism.exception import TourismException
 from tourism.logger import logging
 
@@ -32,6 +36,84 @@ class TrainPipeline:
 
         except Exception as e:
             raise TourismException(e, sys) from e
+
+    @staticmethod
+    def start_data_validation(train_set: DataFrame, test_set: DataFrame) -> bool:
+        logging.info("Entered the start_data_validation method of TrainPipeline class")
+
+        try:
+            data_validation = DataValidation(train_set, test_set)
+
+            data_validation_status = data_validation.initiate_data_validation()
+
+            logging.info("Performed the data validation operation")
+
+            logging.info(
+                "Exited the start_data_validation method of TrainPipeline class"
+            )
+
+            return data_validation_status
+
+        except Exception as e:
+            raise TourismException(e, sys) from e
+
+
+    @staticmethod
+    def start_data_transformation(
+        train_set: DataFrame, test_set: DataFrame
+    ) -> Tuple[DataFrame, DataFrame]:
+        logging.info(
+            "Entered the start_data_transformation method of TrainPipeline class"
+        )
+
+        try:
+            data_transformation = DataTransformation()
+
+            train_set, test_set = data_transformation.initiate_data_transformation(
+                train_set, test_set
+            )
+
+            logging.info(
+                "Exited the start_data_transformation method of TrainPipeline class"
+            )
+
+            return train_set, test_set
+
+        except Exception as e:
+            raise TourismException(e, sys) from e
+
+
+    @staticmethod
+    def start_model_pusher() -> None:
+        logging.info("Entered the start_model_pusher method of TrainPipeline class")
+
+        try:
+            model_pusher = ModelPusher()
+
+            model_pusher.initiate_model_pusher()
+
+            logging.info("Initiated the model pusher")
+
+            logging.info("Exited the start_model_pusher method of TrainPipeline class")
+
+        except Exception as e:
+            raise TourismException(e, sys) from e
+
+    @staticmethod
+    def start_model_trainer(train_set: DataFrame, test_set: DataFrame) -> None:
+        logging.info("Entered the start_model_trainer method of TrainPipeline class")
+
+        try:
+            model_trainer = ModelTrainer()
+
+            model_trainer.initiate_model_trainer(train_set, test_set)
+
+            logging.info("Exited the start_model_trainer method of TrainPipeline class")
+
+        except Exception as e:
+            raise TourismException(e, sys) from e
+
+
         
     
     def run_pipeline(self) -> None:
@@ -40,6 +122,19 @@ class TrainPipeline:
         try:
             train_set, test_set = self.start_data_ingestion()
 
+            if self.start_data_validation(train_set, test_set) == True:
+                train_set, test_set = self.start_data_transformation(
+                    train_set, test_set
+                )
+
+                self.start_model_trainer(train_set, test_set)
+
+                self.start_model_pusher()
+            else:
+                message = "Data Validation failed !"
+
+                raise TourismException(message, sys)  
+                
             logging.info("Exited the run_pipeline method of TrainPipeline class")
 
         except Exception as e:
