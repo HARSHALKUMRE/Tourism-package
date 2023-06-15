@@ -8,7 +8,7 @@ train_model:
     max_features:
     - 5
     - 7
-    - auto
+    - sqrt
     - 8
     min_samples_split:
     - 2

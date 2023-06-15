@@ -27,3 +27,5 @@ TARGET_COLUMN = "ProdTaken"
 APP_HOST = "0.0.0.0"
 
 APP_PORT = 8080
+
+IO_FILES_BUCKET = "tourism-io-files"
