@@ -16,4 +16,4 @@ dill
 flask
 flask_cors
 mypy-boto3-s3
-#-e .
+-e .
